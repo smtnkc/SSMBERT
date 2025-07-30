@@ -166,20 +166,20 @@ time_end = time.time()
 print(f"Prediction completed in {time_end - time_start:.2f} seconds.")
 
 preds_array = np.array(all_preds)
+round_preds = np.round(preds_array)
 actuals = df_with_predictions[target].values
 
 # Calculate metrics
-mse = float(np.mean((preds_array - actuals)**2))
-mae = float(np.mean(np.abs(preds_array - actuals)))
+mse = float(np.mean((round_preds - actuals)**2))
+mae = float(np.mean(np.abs(round_preds - actuals)))
 nmae = mae / np.mean(actuals)  # Normalized MAE = MAE / mean(y)
-round_preds = np.round(preds_array)
 exact_match_acc = accuracy_score(actuals, round_preds)
 
 # Calculate MMRE and PRED(30)
 valid_indices = actuals != 0
 nonzero_perc = float(np.mean(valid_indices) * 100)  # Percentage of non-zero values
 if np.any(valid_indices):
-    mre = np.abs(preds_array[valid_indices] - actuals[valid_indices]) / actuals[valid_indices]
+    mre = np.abs(round_preds[valid_indices] - actuals[valid_indices]) / actuals[valid_indices]
     mmre = float(np.mean(mre))
     pred30 = float(np.mean(mre <= 0.30))  # percentage of predictions with MRE <= 0.30
 else:
@@ -196,6 +196,7 @@ new_log = pd.DataFrame({
     'PRED30': [pred30],
     'NonZeroPerc': [nonzero_perc]
 })
+new_log = new_log.round(4)  # Round to 4 decimal places
 log_df = pd.concat([log_df, new_log], ignore_index=True)
 log_df.to_csv(log_path, index=False)
 
