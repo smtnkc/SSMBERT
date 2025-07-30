@@ -4,6 +4,8 @@ BERT-based models for software size measurement.
 
 > **Note:** The industrial datasets for Case 1 and Case 2 are not publicly available due to intellectual property restrictions.
 
+> **Availability:** Models trained on the heterogeneous dataset are publicly available at [https://huggingface.co/smtnkc/SSMBERT](https://huggingface.co/smtnkc/SSMBERT/tree/main).
+
 ## Data Shuffling
 
 Run the following commands to shuffle each dataset:
